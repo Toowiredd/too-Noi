@@ -34,6 +34,11 @@ function getProviderDisplayNameFromId(providerId) {
 
 ipcMain.on('reroute-ai-output', async (event, { sourceMessageId, textContent, targetProviderId }) => {
   try {
+    // Input validation for textContent length or format
+    if (typeof textContent !== 'string' || textContent.length === 0 || textContent.length > 10000) {
+      throw new Error('Invalid textContent length or format');
+    }
+
     const newMessageId = uuidv4();
     const newMessage = {
       messageId: newMessageId,
